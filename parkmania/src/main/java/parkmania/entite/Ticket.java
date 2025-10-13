@@ -1,4 +1,4 @@
-package parkmania;
+package parkmania.entite;
 
 import jakarta.persistence.*;
 
