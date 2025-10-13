@@ -1,4 +1,4 @@
-package com.parking.servlet;
+package parkmania.servlet;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
