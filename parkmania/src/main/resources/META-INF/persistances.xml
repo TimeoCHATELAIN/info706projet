@@ -5,8 +5,8 @@
              version="2.1">
     <persistence-unit name="ParkingPU" transaction-type="JTA">
         <jta-data-source>java:/YourDataSourceName</jta-data-source>
-        <class>parkmania.Ticket</class>
-        <class>parkmania.Paiement</class>
+        <class>parkmania.entite.Ticket</class>
+        <class>parkmania.entite.Paiement</class>
         <properties>
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="hibernate.show_sql" value="true"/>
