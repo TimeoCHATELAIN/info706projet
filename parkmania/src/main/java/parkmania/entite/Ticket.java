@@ -12,6 +12,7 @@ public class Ticket implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime dateEntree;
     private LocalDateTime dateSortie;
 
