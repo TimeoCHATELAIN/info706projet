@@ -1,21 +1,22 @@
 package parkmania.service;
 
-import jakarta.ejb.Stateless;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import parkmania.entite.Ticket;
 import parkmania.entite.Paiement;
 
+import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 @Stateless
 public class TicketService {
-    @PersistenceContext
+    @PersistenceContext(unitName = "parkingPU")
     private EntityManager em;
 
-    public void createTicket(Ticket ticket) {em.persist(ticket);}
+    public Ticket createTicket() {
+        Ticket ticket = new Ticket();
+        em.persist(ticket);
+        return ticket;
+    }
     public void deleteTicket(Ticket ticket) {em.remove(em.find(Ticket.class, ticket.getId()));}
     public void updateTicket(Ticket ticket) {em.merge(ticket);}
 
