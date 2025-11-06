@@ -17,8 +17,8 @@ public class Paiement implements Serializable {
     private LocalDateTime datePaiement;
     private double montant;
 
-    public enum TypePaiment {CB, ESPECE};
-    private TypePaiment paiement;
+    public enum TypePaiement {CB, ESPECE};
+    private TypePaiement paiement;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ticket_id")
@@ -27,7 +27,7 @@ public class Paiement implements Serializable {
     public Paiement() {
     }
 
-    public Paiement(double montant, TypePaiment typePaiement, Ticket ticket) {
+    public Paiement(double montant, TypePaiement typePaiement, Ticket ticket) {
         this.datePaiement = LocalDateTime.now();
         this.montant = montant;
         this.paiement = typePaiement;
@@ -43,8 +43,8 @@ public class Paiement implements Serializable {
     public double getMontant() { return montant; }
     public void setMontant(double montant) { this.montant = montant; }
 
-    public TypePaiment getTypePaiement() { return paiement; }
-    public void setTypePaiement(TypePaiment typePaiement) { this.paiement = typePaiement; }
+    public TypePaiement getTypePaiement() { return paiement; }
+    public void setTypePaiement(TypePaiement typePaiement) { this.paiement = typePaiement; }
 
     public Ticket getTicket() { return ticket; }
     public void setTicket(Ticket ticket) { this.ticket = ticket; }

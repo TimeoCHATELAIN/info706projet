@@ -36,7 +36,7 @@ public class Ticket implements Serializable {
     public List<Paiement> getPaiements() { return paiements; }
     public void setPaiements(List<Paiement> paiements) { this.paiements = paiements; }
 
-    public void addPaiment(Paiement paiement) {
+    public void addPaiement(Paiement paiement) {
         this.paiements.add(paiement);
         paiement.setTicket(this);
     }
