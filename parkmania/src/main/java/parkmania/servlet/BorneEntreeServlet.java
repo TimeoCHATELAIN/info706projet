@@ -24,7 +24,7 @@ public class BorneEntreeServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
-        out.println("<h2>Bienvenue !</h2>");
+        out.println("<h2>Wesh !</h2>");
         out.println("Ticket n : " + ticket.getId() + "<br>");
         out.println("Date d'entrée : " + ticket.getDateEntree() + "<br>");
         out.println("</body></html>");

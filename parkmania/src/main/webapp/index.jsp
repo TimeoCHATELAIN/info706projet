@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Bienvenu chez parkmania</title>
+    <title>Bienvenue chez parkmania</title>
 </head>
 <body>
     <h1>Bienvenue au parking !</h1>
