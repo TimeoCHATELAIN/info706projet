@@ -1,0 +1,149 @@
+:root{
+    --bg: #0f1724; /* deep slate */
+    --card: #0b1220;
+    --muted: #94a3b8;
+    --accent: #5eead4; /* teal */
+    --accent-2: #7c3aed; /* purple */
+    --white: #f8fafc;
+    --success: #10b981;
+    --danger: #ef4444;
+    --glass: rgba(255,255,255,0.04);
+    --radius: 12px;
+    --max-width: 900px;
+}
+
+/* Reset-ish */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;padding:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial}
+body{
+    background: linear-gradient(180deg, #071024 0%, #071a2a 100%);
+    color:var(--white);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+    min-height:100vh;
+    padding:24px; /* smaller padding so layout looks correct */
+    /* use normal flow so long pages can scroll normally */
+}
+
+/* helper to center content both vertically and horizontally inside viewport
+   Use this on pages that should be centered (e.g. index.jsp) by wrapping
+   the main card with <div class="center-viewport"> */
+.center-viewport{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+}
+
+.page{
+    max-width:var(--max-width);
+    margin:0 auto;
+    padding:20px;
+    width:100%;
+}
+
+h1{font-size:1.6rem;margin:0 0 16px;color:var(--white)}
+
+.card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+    border-radius:var(--radius);
+    padding:20px;
+    box-shadow: 0 6px 24px rgba(2,6,23,0.6), inset 0 1px 0 rgba(255,255,255,0.02);
+    border:1px solid rgba(255,255,255,0.03);
+    width:100%;
+    max-width:720px; /* card width constrained for readability */
+}
+
+.center{display:flex;align-items:center;justify-content:center}
+
+form{margin:12px 0}
+
+label{display:block;color:var(--muted);font-size:0.9rem;margin-bottom:6px}
+
+input[type="text"], input[type="number"], select, textarea{
+    /* inputs no longer stretch full page width; constrained for better UX */
+    width:100%;
+    max-width:420px;
+    padding:10px 12px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.06);
+    background:rgba(255,255,255,0.02);
+    color:var(--white);
+    font-size:1rem;
+    outline:none;
+    transition:box-shadow .12s ease, transform .06s ease;
+}
+input:focus, select:focus, textarea:focus{box-shadow:0 6px 18px rgba(124,58,237,0.12);transform:translateY(-1px)}
+
+button{
+    display:inline-block;
+    padding:10px 14px;
+    border-radius:10px;
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+    color:var(--card);
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    box-shadow:0 8px 20px rgba(92, 17, 255, 0.12);
+    transition:transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+}
+button:hover{transform:translateY(-2px);opacity:0.98}
+button.secondary{background:transparent;color:var(--accent);border:1px solid rgba(94,234,212,0.12)}
+
+/* anchor-styled buttons */
+.btn{display:inline-block;padding:10px 14px;border-radius:10px;font-weight:600;text-decoration:none;color:var(--card);background:linear-gradient(90deg,var(--accent),var(--accent-2));box-shadow:0 8px 20px rgba(92, 17, 255, 0.12);}
+.btn.secondary{background:transparent;color:var(--accent);border:1px solid rgba(94,234,212,0.12);box-shadow:none}
+
+.top-actions{display:flex;justify-content:flex-end;margin-bottom:12px}
+
+/* Modal styles */
+.modal{position:fixed;top:0;left:0;right:0;bottom:0;display:none;align-items:center;justify-content:center;z-index:1200}
+.modal.open{display:flex}
+.modal-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.6));backdrop-filter:blur(4px)}
+.modal-content{position:relative;z-index:1201;max-width:520px;width:90%;padding:18px}
+.modal-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px}
+.modal-body p{margin:8px 0;color:var(--muted)}
+
+/* simple toggle switch */
+.switch{
+    display:inline-flex;align-items:center;gap:8px;color:var(--muted);
+}
+.switch input[type="checkbox"]{appearance:none;width:42px;height:24px;border-radius:999px;background:rgba(255,255,255,0.06);position:relative;outline:none;cursor:pointer}
+.switch input[type="checkbox"]:before{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:var(--white);transition:transform .18s ease}
+.switch input[type="checkbox"]:checked{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.switch input[type="checkbox"]:checked:before{transform:translateX(18px)}
+
+
+.row{display:flex;gap:12px}
+.col{flex:1}
+
+.message{color:var(--success);background:rgba(16,185,129,0.06);padding:10px;border-radius:8px;border:1px solid rgba(16,185,129,0.08)}
+.erreur{color:var(--danger);background:rgba(239,68,68,0.04);padding:10px;border-radius:8px;border:1px solid rgba(239,68,68,0.06)}
+
+hr{border:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent);margin:20px 0}
+
+.ticket-info p{margin:6px 0;color:var(--muted)}
+.ticket-info strong{color:var(--white)}
+
+.payments-list{list-style:none;padding-left:0;margin:0}
+.payments-list li{padding:8px;border-radius:8px;background:rgba(255,255,255,0.016);margin-bottom:8px;color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+
+/* Responsive */
+@media (max-width:720px){
+    body{padding:16px}
+    .card{padding:16px}
+    .row{flex-direction:column}
+}
+
+/* small utility classes */
+.muted{color:var(--muted)}
+.small{font-size:0.9rem}
+
+/* Nice little focus for inputs inside .card */
+.card input:focus{box-shadow:0 8px 30px rgba(7,26,42,0.6)}
+
+/* link styling */
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
