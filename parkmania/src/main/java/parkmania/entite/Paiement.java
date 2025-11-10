@@ -1,12 +1,8 @@
 package parkmania.entite;
 
 import jakarta.persistence.*;
-
 import java.io.Serializable;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.List;
-
 
 @Entity
 public class Paiement implements Serializable {
