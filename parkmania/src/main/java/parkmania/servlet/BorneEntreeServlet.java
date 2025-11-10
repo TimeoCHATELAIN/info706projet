@@ -11,11 +11,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.format.DateTimeFormatter;
 
 @WebServlet(name = "BorneEntreeServlet", urlPatterns = {"/entree"})
 public class BorneEntreeServlet extends HttpServlet {
     @EJB
     private TicketService ticketService;
+
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Ticket ticket = ticketService.createTicket();
@@ -25,7 +28,7 @@ public class BorneEntreeServlet extends HttpServlet {
         out.println("<html><body>");
         out.println("<h2>Bienvenue !</h2>");
         out.println("Ticket n : " + ticket.getId() + "<br>");
-        out.println("Date d'entrée : " + ticket.getDateEntree() + "<br>");
+        out.println("Date d'entrée : " + ticket.getDateEntree().format(formatter) + "<br>");
         out.println("</body></html>");
     }
 }

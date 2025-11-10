@@ -3,8 +3,9 @@ package parkmania.entite;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDateTime;
-
+import java.util.List;
 
 
 @Entity
@@ -17,10 +18,10 @@ public class Paiement implements Serializable {
     private LocalDateTime datePaiement;
     private double montant;
 
-    public enum TypePaiement {CB, ESPECE};
+    public enum TypePaiement {CB, ESPECES};
     private TypePaiement paiement;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
@@ -48,4 +49,5 @@ public class Paiement implements Serializable {
 
     public Ticket getTicket() { return ticket; }
     public void setTicket(Ticket ticket) { this.ticket = ticket; }
+
 }

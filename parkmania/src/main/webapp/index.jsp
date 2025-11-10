@@ -16,6 +16,19 @@
     <form action="entree" method="get">
         <button type="submit">Entrer dans le parking</button>
     </form>
+    <form action="bornePaiement" method="get">
+        <div>
+            <label for="numero">Numéro du ticket</label>
+            <input
+                    type="text"
+                    id="numero"
+                    name="numero"
+                    placeholder="numéro du ticket"
+                    required
+            />
+        </div>
+        <button type="submit">Payer</button>
+    </form>
     <form action="sortie" methode="get">
         <button type="submit">Sortir du parking</button>
     </form>

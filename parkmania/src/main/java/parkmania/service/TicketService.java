@@ -28,4 +28,8 @@ public class TicketService {
             em.persist(paiement);
         }
     }
+
+    public Ticket getTicket(Long ticketId) {
+        return em.find(Ticket.class, ticketId);
+    }
 }

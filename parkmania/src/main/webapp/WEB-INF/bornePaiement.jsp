@@ -1,4 +1,6 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="parkmania.util.DateUtils" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -47,7 +49,7 @@
         <hr>
         <h3>Informations du ticket</h3>
         <p><strong>Numéro :</strong> ${ticket.id}</p>
-        <p><strong>Date d'entrée :</strong> ${ticket.dateEntree}</p>
+        <p><strong>Date d'entrée :</strong> ${dateEntree}</p>
 
         <h3>Paiement</h3>
         <p><strong>Total payé :</strong> ${totalPaye} €</p>
@@ -67,11 +69,11 @@
             <button type="submit">Valider le paiement</button>
         </form>
 
-        <c:if test="${not empty paiements}">
+        <c:if test="${not empty paiementsFormates}">
             <hr>
             <h3>Historique des paiements</h3>
             <ul>
-                <c:forEach var="p" items="${paiements}">
+                <c:forEach var="p" items="${paiementsFormates}">
                     <li>${p.datePaiement} — ${p.typePaiement} : ${p.montant} €</li>
                 </c:forEach>
             </ul>
