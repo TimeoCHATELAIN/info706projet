@@ -26,6 +26,8 @@ public class BornePaiementServlet extends HttpServlet {
     @Inject
     private PaiementService paiementService;
 
+//    private
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String numeroParam = req.getParameter("numero");
@@ -37,16 +39,29 @@ public class BornePaiementServlet extends HttpServlet {
 
                 if (ticket != null) {
                     double totalPaye = paiementService.totalPaye(ticket);
-                    double montantTotal = paiementService.calculerMontantAPayer(ticket.getDateEntree(), LocalDateTime.now());
+                    double montantTotal = paiementService.calculerMontantAPayer(ticket);
                     double montantRestant = Math.max(0, montantTotal - totalPaye);
+
+                    List<Paiement> paiements = paiementService.listerPaiementsParTicket(ticket.getId());
 
                     req.setAttribute("ticket", ticket);
                     req.setAttribute("totalPaye", totalPaye);
                     req.setAttribute("montantRestant", montantRestant);
-                    req.setAttribute("dateEntree", DateUtils.format(ticket.getDateEntree()));
-
-                    List<Paiement> paiements = paiementService.listerPaiementsParTicket(ticket.getId());
                     req.setAttribute("paiements", paiements);
+
+                    List<Map<String, Object>> paiementsFormates = paiements.stream()
+                            .map(p -> {
+                                Map<String, Object> m = new HashMap<>();
+                                m.put("id", p.getId());
+                                m.put("datePaiement", DateUtils.format(p.getDatePaiement())); // formaté
+                                m.put("montant", p.getMontant());
+                                m.put("typePaiement", p.getTypePaiement());
+                                return m;
+                            })
+                            .collect(Collectors.toList());
+
+                    req.setAttribute("paiementsFormates", paiementsFormates);
+                    req.setAttribute("dateEntree", DateUtils.format(ticket.getDateEntree()));
                 } else {
                     req.setAttribute("erreur", "Ticket introuvable !");
                 }
@@ -92,7 +107,7 @@ public class BornePaiementServlet extends HttpServlet {
             }
 
             double totalPaye = paiementService.totalPaye(ticket);
-            double montantTotal = paiementService.calculerMontantAPayer(ticket.getDateEntree(), java.time.LocalDateTime.now());
+            double montantTotal = paiementService.calculerMontantAPayer(ticket);
             double montantRestant = Math.max(0, montantTotal - totalPaye);
 
             List<Paiement> paiements = paiementService.listerPaiementsParTicket(ticket.getId());

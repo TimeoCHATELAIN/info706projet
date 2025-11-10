@@ -9,6 +9,7 @@ import parkmania.entite.Ticket;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -26,20 +27,68 @@ public class PaiementService {
 
     /** Tarif en euros par minute (2 centimes d'euro la minute). */
     private static final double TARIF_PAR_MINUTE = 0.02;
+    private static final int GRACE_PERIOD_MINUTES = 15;
 
     // -------------------------------------------------------------
     //                      MÉTHODES MÉTIER
     // -------------------------------------------------------------
 
     /**
-     * Calcule le montant à payer entre la date d’entrée et la date actuelle.
-     * @param dateEntree date d’entrée du véhicule
-     * @param datePaiement date du paiement (souvent LocalDateTime.now())
-     * @return montant total à payer en euros
+     * Calcule le montant total à payer en tenant compte du délai de grâce.
+     *
+     * @param ticket le ticket concerné
+     * @return montant à payer en euros
      */
-    public double calculerMontantAPayer(LocalDateTime dateEntree, LocalDateTime datePaiement) {
-        long minutes = Duration.between(dateEntree, datePaiement).toMinutes();
+    public double calculerMontantAPayer(Ticket ticket) {
+        LocalDateTime now = LocalDateTime.now();
+
+        // 🔹 Récupère la somme déjà payée
+        double totalPaye = this.totalPaye(ticket);
+
+        // 🔹 Calcule le montant total dû selon la durée de stationnement
+        double montantTotal = calculerTarif(ticket.getDateEntree(), now);
+
+        // 🔹 Si le client a déjà tout payé → vérifier le délai de 15 minutes
+        if (totalPaye >= montantTotal) {
+            // Date du dernier paiement
+            LocalDateTime dernierPaiement = getDernierPaiement(ticket);
+
+            if (dernierPaiement != null) {
+                Duration depuisDernierPaiement = Duration.between(dernierPaiement, now);
+
+                // Si le client est encore dans la période de grâce, il ne doit rien
+                if (depuisDernierPaiement.toMinutes() <= GRACE_PERIOD_MINUTES) {
+                    return 0.0;
+                } else {
+                    // Délai dépassé → recalculer le complément depuis la fin des 15 minutes
+                    LocalDateTime reprise = dernierPaiement.plusMinutes(GRACE_PERIOD_MINUTES);
+                    return calculerTarif(reprise, now);
+                }
+            }
+        }
+
+        // 🔹 Si tout n’est pas payé, calculer le solde restant
+        double montantRestant = montantTotal - totalPaye;
+        return Math.max(0.0, montantRestant);
+    }
+
+    /**
+     * Calcule le tarif selon deux dates.
+     */
+    private double calculerTarif(LocalDateTime debut, LocalDateTime fin) {
+        long minutes = Duration.between(debut, fin).toMinutes();
         return minutes * TARIF_PAR_MINUTE;
+    }
+
+    /**
+     * Retourne la date du dernier paiement du ticket (ou null si aucun paiement).
+     */
+    private LocalDateTime getDernierPaiement(Ticket ticket) {
+        List<Paiement> paiements = this.listerPaiementsParTicket(ticket.getId());
+        return paiements.stream()
+                .map(Paiement::getDatePaiement)
+                .max(Comparator.naturalOrder())
+                .orElse(null);
     }
 
     /**
