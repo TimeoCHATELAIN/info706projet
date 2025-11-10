@@ -4,8 +4,8 @@ Ce document contient uniquement les éléments demandés pour la version finale 
 
 1) Membres du binôme
 
-- Nom Prénom 1
-- Nom Prénom 2
+- Nathan ROI
+- Timéo CHATELAIN
 
 Remplacez les deux lignes ci-dessus par les noms réels des personnes du binôme.
 
