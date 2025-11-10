@@ -1,4 +1,4 @@
-# Compte-rendu pour le rendu — ParkMania
+# Compte-rendu — ParkMania
 
 Ce document contient uniquement les éléments demandés pour la version finale du rendu :
 
