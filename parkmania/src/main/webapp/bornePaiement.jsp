@@ -31,8 +31,8 @@
     <h1>Borne de paiement</h1>
 
     <form method="get" action="bornePaiement">
-        <label for="numero">Numéro du ticket</label>
-        <input type="text" id="numero" name="numero"
+        <label for="numero-paiement">Numéro du ticket</label>
+        <input type="text" id="numero-paiement" name="numero-paiement"
                value="${param.numero != null ? param.numero : ''}"
                placeholder="Entrez le numéro du ticket" required />
         <button type="submit">Afficher le ticket</button>
@@ -56,7 +56,7 @@
         <p><strong>Montant restant :</strong> ${montantRestant} €</p>
 
         <form method="post" action="bornePaiement">
-            <input type="hidden" name="numero" value="${ticket.id}" />
+            <input type="hidden" name="numero-paiement" value="${ticket.id}" />
             <label for="montant">Montant à payer (€)</label>
             <input type="number" step="0.01" id="montant" name="montant" value="${montantRestant}" required />
 
