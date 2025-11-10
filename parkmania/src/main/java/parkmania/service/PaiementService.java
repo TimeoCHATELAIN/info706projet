@@ -1,9 +1,9 @@
 package parkmania.service;
 
 import jakarta.ejb.Stateless;
+import jakarta.ejb.EJB;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import parkmania.entite.Paiement;
 import parkmania.entite.Ticket;
 
@@ -25,9 +25,12 @@ public class PaiementService {
     @PersistenceContext(unitName = "parkingPU")
     private EntityManager em;
 
+    @EJB
+    private TimeService timeService;
+
     /** Tarif en euros par minute (2 centimes d'euro la minute). */
-    private static final double TARIF_PAR_MINUTE = 0.02;
-    private static final int GRACE_PERIOD_MINUTES = 15;
+    private final double TARIF_PAR_MINUTE = 0.02;
+    private final int GRACE_PERIOD_MINUTES = 15;
 
     // -------------------------------------------------------------
     //                      MÉTHODES MÉTIER
@@ -40,17 +43,17 @@ public class PaiementService {
      * @return montant à payer en euros
      */
     public double calculerMontantAPayer(Ticket ticket) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = timeService.getNow();
 
-        // 🔹 Récupère la somme déjà payée
-        double totalPaye = this.totalPaye(ticket);
+        // ✅ Si le ticket a déjà une date de sortie, rien à payer
+        if (ticket.getDateSortie() != null) {
+            return 0.0;
+        }
 
-        // 🔹 Calcule le montant total dû selon la durée de stationnement
+        double totalPaye = totalPaye(ticket);
         double montantTotal = calculerTarif(ticket.getDateEntree(), now);
 
-        // 🔹 Si le client a déjà tout payé → vérifier le délai de 15 minutes
         if (totalPaye >= montantTotal) {
-            // Date du dernier paiement
             LocalDateTime dernierPaiement = getDernierPaiement(ticket);
 
             if (dernierPaiement != null) {
@@ -67,10 +70,11 @@ public class PaiementService {
             }
         }
 
-        // 🔹 Si tout n’est pas payé, calculer le solde restant
+        // Si tout n’est pas payé, calculer le solde restant
         double montantRestant = montantTotal - totalPaye;
         return Math.max(0.0, montantRestant);
     }
+
 
     /**
      * Calcule le tarif selon deux dates.
@@ -84,7 +88,7 @@ public class PaiementService {
      * Retourne la date du dernier paiement du ticket (ou null si aucun paiement).
      */
     private LocalDateTime getDernierPaiement(Ticket ticket) {
-        List<Paiement> paiements = this.listerPaiementsParTicket(ticket.getId());
+        List<Paiement> paiements = listerPaiementsParTicket(ticket.getId());
         return paiements.stream()
                 .map(Paiement::getDatePaiement)
                 .max(Comparator.naturalOrder())
@@ -116,7 +120,7 @@ public class PaiementService {
      */
     public Paiement creerPaiement(Ticket ticket, double montant, Paiement.TypePaiement typePaiement) {
         Paiement paiement = new Paiement();
-        paiement.setDatePaiement(LocalDateTime.now());
+        paiement.setDatePaiement(timeService.getNow());
         paiement.setMontant(montant);
         paiement.setTypePaiement(typePaiement);
         paiement.setTicket(ticket);
@@ -183,7 +187,7 @@ public class PaiementService {
     /**
      * Représente un justificatif de paiement à afficher sur la borne.
      */
-    public static class Justificatif {
+    public class Justificatif {
         private final Long numeroTicket;
         private final LocalDateTime dateEntree;
         private final LocalDateTime dateDernierPaiement;
